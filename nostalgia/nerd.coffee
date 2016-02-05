@@ -160,11 +160,6 @@ class Nerd
   a few functions that turn variables into readable formats
   ###
   
-  # some nice class variables for Nerd::readify.numberToEnglishString
-  ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "eighteen", "nineteen"]
-  tens = ["twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
-  scales = ["", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion"]
-  
   readify:
     ###
     generates an HTML list from anything, whether it be a multilevel JSON tree, a simple
@@ -270,6 +265,11 @@ class Nerd
     100000000 -> "one-hundred million"
     ###
     numberToEnglishString: (num) ->
+      # some nice class variables for Nerd::readify.numberToEnglishString
+      ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "eighteen", "nineteen"]
+      tens = ["twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+      scales = ["", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion"]
+      
       # Based on code that I found here:
       # <http://www.anujgakhar.com/2014/02/23/converting-number-to-words-with-javascript/>
       number = Math.abs(num)
