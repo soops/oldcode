@@ -2,14 +2,11 @@
 nerd v1.0
 a library of nerdy but useful functions
 written in my favorite JavaScript precompiler, CoffeeScript
-
-open-source under the [Unlicense]
-(¢) public domain
 ###
 
-Nerd =
+class Nerd
   ###
-  "Nerd.rand"
+  "Nerd::rand"
   a few functions that generate random things
   ###
   rand:
@@ -24,7 +21,7 @@ Nerd =
     # random character from string function
     character: (defCharSet) ->
       defCharSet ?= '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
-      defCharSet.charAt Nerd.rand.int(1, defCharSet.length)
+      defCharSet.charAt Nerd::rand.int(1, defCharSet.length)
     
     # random word function
     word: (length) ->
@@ -40,40 +37,40 @@ Nerd =
       parsed = parse
       # insert capitalized words where there is a '/Ww'
       parsed = parsed.replace /\/Ww/g, ->
-      	# Capitalize random word
-      	string = Nerd.rand.word(Nerd.rand.int(3, 7))
-     		string.charAt(0).toUpperCase() + string.slice(1);
+        # Capitalize random word
+        string = Nerd::rand.word(Nerd::rand.int(3, 7))
+        string.charAt(0).toUpperCase() + string.slice(1);
       # insert lowercase words where there is a '/w'
-      parsed = parsed.replace /\/w/g, -> Nerd.rand.word(Nerd.rand.int(3, 7))
+      parsed = parsed.replace /\/w/g, -> Nerd::rand.word(Nerd::rand.int(3, 7))
       # insert uppercase words where there is a '/W'
-      parsed = parsed.replace /\/W/g, -> Nerd.rand.word(Nerd.rand.int(3, 7)).toUpperCase()
+      parsed = parsed.replace /\/W/g, -> Nerd::rand.word(Nerd::rand.int(3, 7)).toUpperCase()
       
       # insert uppercase or lowercase letters where there is a '/Ll'
-      parsed = parsed.replace /\/Ll/g, -> Nerd.rand.character("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+      parsed = parsed.replace /\/Ll/g, -> Nerd::rand.character("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
       # insert lowercase letters where there is a '/l'
-      parsed = parsed.replace /\/l/g, -> Nerd.rand.character("abcdefghijklmnopqrstuvwxyz")
+      parsed = parsed.replace /\/l/g, -> Nerd::rand.character("abcdefghijklmnopqrstuvwxyz")
       # insert uppercase letters where there is a '/L'
-      parsed = parsed.replace /\/L/g, -> Nerd.rand.character("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+      parsed = parsed.replace /\/L/g, -> Nerd::rand.character("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
       
       # insert digits where there is a '/d'
-      parsed = parsed.replace /\/d/g, -> Nerd.rand.int(0, 10, true)
+      parsed = parsed.replace /\/d/g, -> Nerd::rand.int(0, 10, true)
       
       return parsed
   
   ###
-  "Nerd.data"
+  "Nerd::data"
   a few functions that store, retrieve
   ###
   data:
     ###
     this will store a variable in ls or as a cookie, depending on HTML5 support
-    anyway it doesn't really matter because Nerd.data.retrieve is smart enough
+    anyway it doesn't really matter because Nerd::data.retrieve is smart enough
     to figure out when the variable is stored as a cookie or in ls
     ###
     store: (variable, variableName) ->
-      if Nerd.data.toType(variableName) == "string"
+      if Nerd::data.toType(variableName) == "string"
         # set type as a variable
-        type = Nerd.data.toType(variable)
+        type = Nerd::data.toType(variable)
         
         if localStorage?
           # set a new localstorage item and stringify it as JSON just in case
@@ -86,7 +83,7 @@ Nerd =
           setCookie "#{variableName}Type", type
       else
         # throw error, variablename can only be a string
-        console?.error "variableName is not a string. Instead, it is type #{Nerd.data.toType(variableName)}. Variable names can only be strings."
+        console?.error "variableName is not a string. Instead, it is type #{Nerd::data.toType(variableName)}. Variable names can only be strings."
     
     ###
     better version of "typeof"
@@ -123,19 +120,19 @@ Nerd =
     ###
     this will get a variable stored with Nerd from ls or from the document cookies
     it will then parse and convert it based on the type that it is given from
-    Nerd.data.store
+    Nerd::data.store
     ###
     retrieve: (variableName) ->
-      if Nerd.data.toType(variableName) == "string"
+      if Nerd::data.toType(variableName) == "string"
         if localStorage?
           # get type and stringified JSON
           obj = JSON.parse localStorage.getItem(variableName)
           type = localStorage.getItem "#{variableName}Type"
         else
           # get cookies
-          obj = JSON.parse JSON.stringify(Nerd.data.getcookie(variableName))
+          obj = JSON.parse JSON.stringify(Nerd::data.getcookie(variableName))
           typeName = variableName + "Type"
-          type = Nerd.data.getCookie(typeName)
+          type = Nerd::data.getCookie(typeName)
         # type conversions
         switch type
           when "string"
@@ -156,14 +153,14 @@ Nerd =
         return obj
       else
         # throw error, variablename can only be a string
-        console?.error "variableName is not a string. Instead, it is type #{Nerd.data.toType(variableName)}. Variable names can only be strings."
+        console?.error "variableName is not a string. Instead, it is type #{Nerd::data.toType(variableName)}. Variable names can only be strings."
 
   ###
-  "Nerd.readify"
+  "Nerd::readify"
   a few functions that turn variables into readable formats
   ###
   
-  # some nice class variables for Nerd.readify.numberToEnglishString
+  # some nice class variables for Nerd::readify.numberToEnglishString
   ones = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "eighteen", "nineteen"]
   tens = ["twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
   scales = ["", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion"]
@@ -180,14 +177,14 @@ Nerd =
       genlist = "";
       
       # start looping through item
-      if Array.isArray(item) then genlist += Nerd.readify.recursive.array item
-      else if typeof item == "object" && item? then genlist += Nerd.readify.recursive.object item
-      else genlist += Nerd.readify.recursive.other item
+      if Array.isArray(item) then genlist += Nerd::readify.recursive.array item
+      else if typeof item == "object" && item? then genlist += Nerd::readify.recursive.object item
+      else genlist += Nerd::readify.recursive.other item
       
       return genlist
     
     ###n
-    All of the recursive stuff for Nerd.readify.objectToHTMlList and Nerd.readify.numberToEnglishString is stored inside this pocket,
+    All of the recursive stuff for Nerd::readify.objectToHTMlList and Nerd::readify.numberToEnglishString is stored inside this pocket,
     just for organizational sake.
     ###
     recursive:
@@ -197,9 +194,9 @@ Nerd =
         for key, value of obj
           if obj.hasOwnProperty(key)
             genlist += "<dt>#{key}</dt>\n"
-            if Array.isArray(value) then genlist += "<dd>#{Nerd.readify.recursive.array value}</dd>\n" # loop through array item
-            else if typeof value == "object" && value? then genlist += "<dd>#{Nerd.readify.recursive.object value}</dd>\n" # loop through object item
-            else genlist += "<dd>#{Nerd.readify.recursive.other value}</dd>\n" # loop through normal item
+            if Array.isArray(value) then genlist += "<dd>#{Nerd::readify.recursive.array value}</dd>\n" # loop through array item
+            else if typeof value == "object" && value? then genlist += "<dd>#{Nerd::readify.recursive.object value}</dd>\n" # loop through object item
+            else genlist += "<dd>#{Nerd::readify.recursive.other value}</dd>\n" # loop through normal item
         
         genlist += "</dl>\n"
         return genlist
@@ -209,9 +206,9 @@ Nerd =
         
         # iterate over array
         for item in list
-          if Array.isArray(item) then genlist += "<li>#{Nerd.readify.recursive.array item}</li>\n" # loop through array item
-          else if typeof item == "object" && item? then genlist += "<li>#{Nerd.readify.recursive.object item}</li>\n" # loop through object item
-          else genlist += "<li>#{Nerd.readify.recursive.other item}</li>\n" # loop through normal item
+          if Array.isArray(item) then genlist += "<li>#{Nerd::readify.recursive.array item}</li>\n" # loop through array item
+          else if typeof item == "object" && item? then genlist += "<li>#{Nerd::readify.recursive.object item}</li>\n" # loop through object item
+          else genlist += "<li>#{Nerd::readify.recursive.other item}</li>\n" # loop through normal item
         
         genlist += "</ol>\n" # finish list
         return genlist
@@ -220,7 +217,7 @@ Nerd =
         "#{variable}" # return variable... honestly this function doesn't do shit...
       
       
-      # beyond this point is Nerd.readify.numberToEnglishString
+      # beyond this point is Nerd::readify.numberToEnglishString
       convert_less_than_hundred: (number) ->
         return ones[number] if number < 20
         for i in [0..tens.length]
@@ -239,7 +236,7 @@ Nerd =
               if modulus > 0
                   word = word + " "
           if modulus > 0
-              word = word + Nerd.readify.recursive.convert_less_than_hundred modulus
+              word = word + Nerd::readify.recursive.convert_less_than_hundred modulus
           word
    
       check_negative: (number, word) ->
@@ -250,7 +247,7 @@ Nerd =
     ["red", "blue", "yellow"] -> "red, blue, and yellow"
     ###
     arrayToEnglishList: (array) ->
-      if Nerd.data.toType(array) == "array" && array
+      if Nerd::data.toType(array) == "array" && array
         list = ""
         for item, i in array
           if i < array.length - 1
@@ -276,8 +273,8 @@ Nerd =
       # Based on code that I found here:
       # <http://www.anujgakhar.com/2014/02/23/converting-number-to-words-with-javascript/>
       number = Math.abs(num)
-      return Nerd.readify.recursive.check_negative(num, Nerd.readify.recursive.convert_less_than_hundred number) if number < 100
-      return Nerd.readify.recursive.check_negative(num, Nerd.readify.recursive.convert_less_than_thousand number) if number < 1000
+      return Nerd::readify.recursive.check_negative(num, Nerd::readify.recursive.convert_less_than_hundred number) if number < 100
+      return Nerd::readify.recursive.check_negative(num, Nerd::readify.recursive.convert_less_than_thousand number) if number < 1000
       for n in [0..scales.length]
         previousScale = n - 1
         scaleValue = Math.pow(1000, n)
@@ -285,7 +282,7 @@ Nerd =
           previousScaleValue = Math.pow(1000, previousScale)
           numberPart = parseInt(number / previousScaleValue, 10)
           remainder = number - (numberPart * previousScaleValue)
-          word = Nerd.readify.recursive.convert_less_than_thousand(numberPart) + " " + scales[previousScale]
+          word = Nerd::readify.recursive.convert_less_than_thousand(numberPart) + " " + scales[previousScale]
           if remainder > 0
-            word = word + ", " + Nerd.readify.numberToEnglishString(remainder);
-          return Nerd.readify.recursive.check_negative(num, word)
+            word = word + ", " + Nerd::readify.numberToEnglishString(remainder);
+          return Nerd::readify.recursive.check_negative(num, word)
