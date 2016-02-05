@@ -1,0 +1,2 @@
+# oldcode
+A collection of projects, files, and general old programs that I either 1) never released or 2) never finished. There might be some gems in here. I'll update as needed, but you should know most of my code is already on GitHub. Check each folder for a readme on that specific folder.
